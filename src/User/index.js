@@ -13,8 +13,8 @@ import {
 } from './styles';
 
 export default function User({user, onPress}) {
-  const offset = new Animated.ValueXY({x: 0, y: 50});
-  const opacity = new Animated.Value(0);
+  const [offset] = useState(new Animated.ValueXY({x: 0, y: 50}));
+  const [opacity] = useState(new Animated.Value(0));
   //const [offset, setOffset] = useState(new Animated.ValueXY({x: 0, y: 50}));
 
   useEffect(() => {

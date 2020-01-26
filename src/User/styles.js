@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 
-export const Container = styled.View`
+export const Container = styled.SafeAreaView`
   margin: 10px 15px 0 15px;
   border-radius: 10px;
   flex-direction: column;

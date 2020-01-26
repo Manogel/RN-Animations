@@ -51,7 +51,7 @@ export default function src() {
       color: "#E75A63"
     },
     {
-      id: 1,
+      id: 5,
       name: "Diego Fernandes",
       description: "Head de programação!",
       avatar: "https://avatars0.githubusercontent.com/u/2254731?s=460&v=4",
@@ -61,7 +61,7 @@ export default function src() {
       color: "#57BCBC"
     },
     {
-      id: 2,
+      id: 6,
       name: "Robson Marques",
       description: "Head de empreendedorismo!",
       avatar: "https://avatars2.githubusercontent.com/u/861751?s=460&v=4",
@@ -71,7 +71,7 @@ export default function src() {
       color: "#E75A63"
     },
     {
-      id: 3,
+      id: 7,
       name: "Cleiton Souza",
       description: "Head de mindset!",
       avatar: "https://avatars0.githubusercontent.com/u/4669899?s=460&v=4",
@@ -81,7 +81,7 @@ export default function src() {
       color: "#2E93E5"
     },
     {
-      id: 4,
+      id: 8,
       name: "Robson Marques",
       description: "Head de empreendedorismo!",
       avatar: "https://avatars2.githubusercontent.com/u/861751?s=460&v=4",
@@ -93,7 +93,7 @@ export default function src() {
   ])
   const [userSelected, setSelected] = useState(null)
   const [userInfoVisible, SetInfoVisible]  = useState(false)
-  const scrollOffset = new Animated.Value(0)
+  const [scrollOffset] = useState(new Animated.Value(0))
 
 
   function selectUser(user){
@@ -134,7 +134,7 @@ export default function src() {
       <Header style={{
         height: scrollOffset.interpolate({
           inputRange: [0, 140],
-          outputRange: [200, 70],
+          outputRange: [200, 90],
           extrapolate: 'clamp'
         })
       }} >

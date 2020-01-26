@@ -6,8 +6,9 @@ export const Container = styled.View`
 `;
 
 export const Header = styled(Animated.View)`
-  padding: ${Platform.OS === "ios" ? 40 : 20}px 15px 0 15px;
+  padding: ${Platform.OS === "ios" ? 70 : 20}px 15px 0 15px;
   background: #2e93e5;
+  align-items: center;
 `;
 
 export const HeaderImage = styled.Image`

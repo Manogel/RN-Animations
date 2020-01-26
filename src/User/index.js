@@ -1,5 +1,11 @@
 import React, {useState, useEffect} from 'react';
-import {TouchableWithoutFeedback, Animated} from 'react-native';
+import {
+  TouchableWithoutFeedback,
+  Animated,
+  PanResponder,
+  Dimensions,
+  Alert,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   Container,
@@ -12,10 +18,40 @@ import {
   LikeText,
 } from './styles';
 
+const {width} = Dimensions.get('window');
+
 export default function User({user, onPress}) {
   const [offset] = useState(new Animated.ValueXY({x: 0, y: 50}));
   const [opacity] = useState(new Animated.Value(0));
-  //const [offset, setOffset] = useState(new Animated.ValueXY({x: 0, y: 50}));
+
+  const panResponder = PanResponder.create({
+    onMoveShouldSetPanResponder: () => true,
+    onPanResponderMove: Animated.event([
+      null,
+      {
+        dx: offset.x,
+      },
+    ]),
+    onPanResponderRelease: () => {
+      console.log(offset.x._value);
+      if (offset.x._value < -200) {
+        Alert.alert(`Deleted!`);
+      }
+
+      Animated.spring(offset.x, {
+        toValue: 0,
+        bounciness: 10,
+      }).start();
+    },
+    onPanResponderTerminationRequest: () => false,
+
+    onPanResponderTerminate: () => {
+      Animated.spring(offset.x, {
+        toValue: 0,
+        bounciness: 10,
+      }).start();
+    },
+  });
 
   useEffect(() => {
     //animações em paralelo
@@ -29,21 +65,25 @@ export default function User({user, onPress}) {
       Animated.timing(opacity, {
         toValue: 1,
         duration: 500,
-      })
-    ]).start()
-    
+      }),
+    ]).start();
   }, []);
 
   return (
     <Animated.View
-      style={[
-        {
-          transform: [...offset.getTranslateTransform()],
-        },
-        {
-          opacity
-        }
-      ]}>
+      {...panResponder.panHandlers}
+      style={{
+        transform: [
+          ...offset.getTranslateTransform(),
+          {
+            rotateZ: offset.x.interpolate({
+              inputRange: [width * -1, width],
+              outputRange: ['-50deg', '50deg'],
+            }),
+          },
+        ],
+        opacity,
+      }}>
       <TouchableWithoutFeedback onPress={onPress}>
         <Container>
           <Thumbnail source={{uri: user.thumbnail}} />

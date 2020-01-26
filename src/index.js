@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Animated, Platform, Dimensions } from 'react-native';
+import { View, ScrollView, Animated, Platform, Dimensions, PanResponder } from 'react-native';
 
 import { Container, 
   Header,
@@ -97,6 +97,7 @@ export default function src() {
   const [scrollOffset] = useState(new Animated.Value(0))
   const [listProgress] = useState(new Animated.Value(0))
   const [userInfoProgress] = useState(new Animated.Value(0))
+  
 
 
   function selectUser(user){

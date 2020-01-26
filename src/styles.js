@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 import { Platform, Animated } from 'react-native'
 
-export const Container = styled.View`
+export const Container = styled(Animated.View)`
   flex: 1;
 `;
 
@@ -11,7 +11,7 @@ export const Header = styled(Animated.View)`
   align-items: center;
 `;
 
-export const HeaderImage = styled.Image`
+export const HeaderImage = styled(Animated.Image)`
   position: absolute;
   left: 0;
   right: 0;
@@ -26,5 +26,6 @@ export const HeaderText = styled(Animated.Text)`
   position: absolute;
   left: 15px;
   bottom: 20px;
+  font-size: 24px;
 `;
 

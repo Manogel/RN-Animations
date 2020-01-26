@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, ScrollView, Animated } from 'react-native';
+import { View, ScrollView, Animated, Platform, Dimensions } from 'react-native';
 
 import { Container, 
   Header,
@@ -9,6 +9,7 @@ import User from './User';
   
 
 export default function src() {
+  const { width } = Dimensions.get('window')
   const [users, setUsers] = useState([
     {
       id: 1,
@@ -94,11 +95,26 @@ export default function src() {
   const [userSelected, setSelected] = useState(null)
   const [userInfoVisible, SetInfoVisible]  = useState(false)
   const [scrollOffset] = useState(new Animated.Value(0))
+  const [listProgress] = useState(new Animated.Value(0))
+  const [userInfoProgress] = useState(new Animated.Value(0))
 
 
   function selectUser(user){
     setSelected(user)
-    SetInfoVisible(true)
+    Animated.sequence([
+      Animated.timing(listProgress, {
+        toValue: 100,
+        duration: 300,
+      }),
+      Animated.timing(userInfoProgress, {
+        toValue: 100,
+        duration: 500
+      })
+    ]).start( ()=> {
+      SetInfoVisible(true)
+    })
+
+    
   }
 
   function renderDetail() {
@@ -106,7 +122,16 @@ export default function src() {
   }
 
   function renderList() {
-    return (<Container>
+    return (<Container
+      style = {{
+        transform: [
+          { translateX: listProgress.interpolate({
+            inputRange: [0, 100],
+            outputRange:[0, width]
+          })}
+        ]
+      }}
+    >
       <ScrollView
       scrollEventThrottle={16}
         onScroll={Animated.event([{
@@ -138,17 +163,42 @@ export default function src() {
           extrapolate: 'clamp'
         })
       }} >
-        <HeaderImage />
+        <HeaderImage source={userSelected ? { uri : userSelected.thumbnail} : null} 
+        style={{
+          opacity: userInfoProgress.interpolate({
+            inputRange: [0, 100],
+            outputRange: [0, 1]
+          })
+        }}
+        />
         <HeaderText
           style={{
             fontSize: scrollOffset.interpolate({
               inputRange: [120, 140],
               outputRange: [24, 18],
               extrapolate: 'clamp'
-            })
+            }),
+            transform: [{
+              translateX: userInfoProgress.interpolate({
+                inputRange: [0, 100],
+                outputRange: [0, width]
+              })
+            }]
           }}
         >
-          {userSelected ? userSelected.name : "RN Animations"}
+          {"RN Animations"}
+        </HeaderText>
+        <HeaderText 
+        style={{
+          transform: [{
+            translateX: userInfoProgress.interpolate({
+              inputRange: [0, 100],
+              outputRange: [width * -1, 0]
+            })
+          }]
+        }}
+        >
+          {userSelected?.name }
         </HeaderText>
       </Header>
       {userInfoVisible ? renderDetail() : renderList()}
